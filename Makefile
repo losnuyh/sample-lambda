@@ -7,14 +7,13 @@ dev:
 
 build:
 	rm -rf ./_package lambda.zip
-	poetry export --without-hashes --format=requirements.txt > requirements.txt
-	pip install \
-		--platform manylinux2014_x86_64 \
-		--implementation cp \
-		--only-binary=:all: \
+	uv export --no-dev --no-hashes -o requirements.txt
+	uv pip install \
+		--python-platform x86_64-unknown-linux-gnu \
+		--python 3.13 \
+		--no-installer-metadata \
 		-r requirements.txt \
-		--target ./_package \
-		--upgrade
+		--target ./_package
 	rm requirements.txt
 	cp -R ./app ./_package/app
 	cp handler.py ./_package/
